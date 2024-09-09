@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,14 @@ export default function AuthPage() {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [])
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Login avec:', email, password)
@@ -30,134 +38,129 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black">
-      <main className="flex-1 bg-gradient-to-b from-gray-50 to-white">
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-black tracking-tight mb-4">
-              Bienvenue sur MonApp
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Connectez-vous ou créez un compte pour commencer votre expérience.
-            </p>
-          </div>
-          <Card className="w-full max-w-md mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
-            <CardHeader className="p-6 bg-gray-50 border-b">
-              <CardTitle className="text-2xl font-bold text-center text-black">Authentification</CardTitle>
-              <CardDescription className="text-center text-gray-600">Connectez-vous ou créez un compte</CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="login">Connexion</TabsTrigger>
-                  <TabsTrigger value="signup">Inscription</TabsTrigger>
-                </TabsList>
-                <TabsContent value="login">
-                  <form onSubmit={handleLogin}>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="login-email" className="text-sm font-medium text-gray-700">Email</Label>
-                        <Input 
-                          id="login-email" 
-                          placeholder="votre@email.com" 
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required 
-                          className="w-full"
-                        />
+    <div className="h-screen flex flex-col bg-white text-black overflow-hidden">
+      <main className="flex-1 overflow-hidden">
+        <div className="h-full overflow-auto bg-gradient-to-b from-gray-50 to-white">
+          <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-black tracking-tight mb-4">
+                Bienvenue sur 4ccesskey
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                Connectez-vous ou créez un compte pour commencer votre expérience.
+              </p>
+            </div>
+            <Card className="w-full max-w-md mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+              <CardHeader className="p-6 bg-gray-50 border-b">
+                <CardTitle className="text-2xl font-bold text-center text-black">Authentification</CardTitle>
+                <CardDescription className="text-center text-gray-600">Connectez-vous ou créez un compte</CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                <Tabs defaultValue="login" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6">
+                    <TabsTrigger value="login">Connexion</TabsTrigger>
+                    <TabsTrigger value="signup">Inscription</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="login">
+                    <form onSubmit={handleLogin}>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="login-email" className="text-sm font-medium text-gray-700">Email</Label>
+                          <Input 
+                            id="login-email" 
+                            placeholder="votre@email.com" 
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required 
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="login-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
+                          <Input 
+                            id="login-password" 
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required 
+                            className="w-full"
+                          />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="login-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
-                        <Input 
-                          id="login-password" 
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required 
-                          className="w-full"
-                        />
+                      <Button className="w-full mt-6" type="submit">Se connecter</Button>
+                    </form>
+                  </TabsContent>
+                  <TabsContent value="signup">
+                    <form onSubmit={handleSignup}>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-name" className="text-sm font-medium text-gray-700">Nom</Label>
+                          <Input 
+                            id="signup-name" 
+                            placeholder="Votre nom" 
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required 
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-email" className="text-sm font-medium text-gray-700">Email</Label>
+                          <Input 
+                            id="signup-email" 
+                            placeholder="votre@email.com" 
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required 
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
+                          <Input 
+                            id="signup-password" 
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required 
+                            className="w-full"
+                          />
+                        </div>
                       </div>
+                      <Button className="w-full mt-6" type="submit">S'inscrire</Button>
+                    </form>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+              {/* <CardFooter className="p-6 bg-gray-50 border-t">
+                <div className="w-full">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-gray-300" />
                     </div>
-                    <Button className="w-full mt-6" type="submit">Se connecter</Button>
-                  </form>
-                </TabsContent>
-                <TabsContent value="signup">
-                  <form onSubmit={handleSignup}>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-name" className="text-sm font-medium text-gray-700">Nom</Label>
-                        <Input 
-                          id="signup-name" 
-                          placeholder="Votre nom" 
-                          type="text"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          required 
-                          className="w-full"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-email" className="text-sm font-medium text-gray-700">Email</Label>
-                        <Input 
-                          id="signup-email" 
-                          placeholder="votre@email.com" 
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required 
-                          className="w-full"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="signup-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
-                        <Input 
-                          id="signup-password" 
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required 
-                          className="w-full"
-                        />
-                      </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-2 bg-gray-50 text-gray-500">Ou continuer avec</span>
                     </div>
-                    <Button className="w-full mt-6" type="submit">S'inscrire</Button>
-                  </form>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="p-6 bg-gray-50 border-t">
-              <div className="w-full">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-gray-300" />
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-gray-50 text-gray-500">Ou continuer avec</span>
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <Button variant="outline" className="w-full">
+                      <GithubIcon className="mr-2 h-4 w-4" />
+                      GitHub
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                      <MailIcon className="mr-2 h-4 w-4" />
+                      Google
+                    </Button>
                   </div>
                 </div>
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <Button variant="outline" className="w-full">
-                    <GithubIcon className="mr-2 h-4 w-4" />
-                    GitHub
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    <MailIcon className="mr-2 h-4 w-4" />
-                    Google
-                  </Button>
-                </div>
-              </div>
-            </CardFooter>
-          </Card>
-        </section>
-      </main>
-      <footer className="bg-gray-50 border-t">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-gray-500">
-            © 2023 MonApp. Tous droits réservés.
-          </div>
+              </CardFooter> */}
+            </Card>
+          </section>
         </div>
-      </footer>
+      </main>
     </div>
   )
 }

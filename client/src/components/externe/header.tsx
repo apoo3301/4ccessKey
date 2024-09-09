@@ -10,7 +10,7 @@ function Header() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <a href="/" className="flex-shrink-0">
-                <span className="text-2xl font-bold text-black">MonApp</span>
+                <span className="text-2xl font-bold text-black">4ccesskey</span>
               </a>
               <nav className="hidden md:ml-10 md:flex md:space-x-8">
                 <a href="/docs" className="text-black hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">Documentation</a>
@@ -21,9 +21,9 @@ function Header() {
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
                 <Button variant="ghost" size="sm">
-                  <SearchIcon className="h-5 w-5" />
+                  <SearchIcon className="h-5 w-5 text-black" />
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button variant="outline" className='text-black' size="sm">
                   Se connecter
                 </Button>
               </div>
