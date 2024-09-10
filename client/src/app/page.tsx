@@ -53,7 +53,7 @@ export default function AuthPage() {
             <Card className="w-full max-w-md mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
               <CardHeader className="p-6 bg-gray-50 border-b">
                 <CardTitle className="text-2xl font-bold text-center text-black">Authentification</CardTitle>
-                <CardDescription className="text-center text-gray-600">votre ip:</CardDescription>
+                <CardDescription className="text-center text-gray-600">Connectez-vous ou créez un compte</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <Tabs defaultValue="login" className="w-full">
