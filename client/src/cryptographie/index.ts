@@ -8,3 +8,7 @@ export function hashPassword(password: string): string {
     hash.update(password);
     return hash.digest("hex");
 }
+
+export function comparePasswordHash(password: string, hashedPassword: string): boolean {
+    return hashPassword(password) === hashedPassword;
+}
