@@ -12,3 +12,8 @@ export function hashPassword(password: string): string {
 export function comparePasswordHash(password: string, hashedPassword: string): boolean {
     return hashPassword(password) === hashedPassword;
 }
+
+export function generateKeyPair(): { privateKey: string; publicKey: string } {
+    const keyPair = ec.genKeyPair();
+    return { privateKey: keyPair.getPrivate("hex"), publicKey: keyPair.getPublic("hex") };
+}
