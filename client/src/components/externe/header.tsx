@@ -24,7 +24,7 @@ function Header() {
                   <SearchIcon className="h-5 w-5 text-black" />
                 </Button>
                 <Button variant="outline" className='text-black' size="sm">
-                  Se connecter
+                🟢 API Active
                 </Button>
               </div>
             </div>
@@ -32,7 +32,7 @@ function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm">
-                    <MenuIcon className="h-6 w-6" />
+                    <MenuIcon className="h-6 w-6 text-black" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
