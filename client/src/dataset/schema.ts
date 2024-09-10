@@ -20,3 +20,7 @@ export const users = pgTable("user", {
     ip: text("ip").notNull(),
 }, (table) => ({ emailUniqueIndex: uniqueIndex("adminEmailUniqueIndex").on(lower(table.email),), }));
 
+export const adminUserEmail = pgTable("adminUserEmail", {
+    id: text("id").primaryKey().$defaultFn(uuidv7),
+    email: text("email").notNull(),
+}, (table) => ({ adminUserEmailIndex: uniqueIndex("adminUserEmailIndex").on(lower(table.email),), }));
