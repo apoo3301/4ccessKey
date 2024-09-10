@@ -17,3 +17,8 @@ export function generateKeyPair(): { privateKey: string; publicKey: string } {
     const keyPair = ec.genKeyPair();
     return { privateKey: keyPair.getPrivate("hex"), publicKey: keyPair.getPublic("hex") };
 }
+
+export function getPublicKeyFromPrivateKey(privateKey: string): string {
+    const keyPair = ec.keyFromPrivate(privateKey);
+    return keyPair.getPublic("hex");
+}
