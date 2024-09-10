@@ -1,59 +1,131 @@
 {
-  "id": "7f97ac37-cf06-4a17-b7ea-b9d94532c391",
+  "id": "9f782d31-52fd-4586-a80e-1b7da32bb65c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.adminUserEmail": {
-      "name": "adminUserEmail",
+    "public.account": {
+      "name": "account",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
+        "userId": {
+          "name": "userId",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
-      "indexes": {
-        "adminUserEmailIndex": {
-          "name": "adminUserEmailIndex",
-          "columns": [
-            {
-              "expression": "LOWER(\"email\")",
-              "asc": true,
-              "isExpression": true,
-              "nulls": "last"
-            }
+      "indexes": {},
+      "foreignKeys": {
+        "account_userId_user_id_fk": {
+          "name": "account_userId_user_id_fk",
+          "tableFrom": "account",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
           ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "account_provider_providerAccountId_pk": {
+          "name": "account_provider_providerAccountId_pk",
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.authenticator": {
       "name": "authenticator",
       "schema": "",
       "columns": {
-        "credentialId": {
-          "name": "credentialId",
+        "credentialID": {
+          "name": "credentialID",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "userId": {
           "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credentialPublicKey": {
+          "name": "credentialPublicKey",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -70,18 +142,17 @@
           "primaryKey": false,
           "notNull": true
         },
-        "credentialTransport": {
-          "name": "credentialTransport",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "credentialBackedUp": {
           "name": "credentialBackedUp",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
-          "default": false
+          "notNull": true
+        },
+        "transports": {
+          "name": "transports",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -101,20 +172,20 @@
         }
       },
       "compositePrimaryKeys": {
-        "authenticator_credentialId_userId_pk": {
-          "name": "authenticator_credentialId_userId_pk",
+        "authenticator_userId_credentialID_pk": {
+          "name": "authenticator_userId_credentialID_pk",
           "columns": [
-            "credentialId",
-            "userId"
+            "userId",
+            "credentialID"
           ]
         }
       },
       "uniqueConstraints": {
-        "authenticator_credentialId_unique": {
-          "name": "authenticator_credentialId_unique",
+        "authenticator_credentialID_unique": {
+          "name": "authenticator_credentialID_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "credentialId"
+            "credentialID"
           ]
         }
       }
@@ -183,11 +254,23 @@
           "primaryKey": false,
           "notNull": true
         },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "password": {
           "name": "password",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "role": {
           "name": "role",
@@ -195,28 +278,15 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'guest'"
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "ip": {
-          "name": "ip",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
+          "default": "'user'"
         }
       },
       "indexes": {
-        "adminEmailUniqueIndex": {
-          "name": "adminEmailUniqueIndex",
+        "emailUniqueIndex": {
+          "name": "emailUniqueIndex",
           "columns": [
             {
-              "expression": "LOWER(\"email\")",
+              "expression": "lower(\"email\")",
               "asc": true,
               "isExpression": true,
               "nulls": "last"
@@ -274,9 +344,8 @@
       "name": "role",
       "schema": "public",
       "values": [
-        "admin",
-        "moderator",
-        "guest"
+        "user",
+        "admin"
       ]
     }
   },
