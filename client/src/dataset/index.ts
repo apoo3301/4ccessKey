@@ -11,11 +11,11 @@ if (!DATABASE_TOKEN) {
 const sql = neon(DATABASE_TOKEN);
 const db = drizzle(sql, { schema });
 
-db.query("SELECT 1").then(() => {
+db.select().from(schema.users).limit(1).then(() => {
     console.log("DATABASE IS CONNECTED");
 }).catch((error: any) => {
     console.error("DATABASE CONNECTION ERROR", error);
     process.exit(1);
-})
+});
 
 export default db;
