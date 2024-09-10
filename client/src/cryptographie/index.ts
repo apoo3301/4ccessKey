@@ -22,3 +22,9 @@ export function getPublicKeyFromPrivateKey(privateKey: string): string {
     const keyPair = ec.keyFromPrivate(privateKey);
     return keyPair.getPublic("hex");
 }
+
+export function sign(data: string, privateKey: string): string {
+    const keyPair = ec.keyFromPrivate(privateKey);
+    const signature = keyPair.sign(data);
+    return signature.toDER("hex");
+}
