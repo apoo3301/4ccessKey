@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dbgen": "drizzle-kit generate",
+    "dbmigrate": "drizzle-kit migrate",
+    "dbrollback": "drizzle-kit rollback",
+    "dbstudio": "drizzle-kit studio"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.5",
@@ -28,7 +32,8 @@
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "valibot": "^0.41.0"
   },
   "devDependencies": {
     "@types/elliptic": "^6.4.18",
