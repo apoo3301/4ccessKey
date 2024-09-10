@@ -13,6 +13,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import SignInForm from '@/components/externe/signInForm'
+import SignUpForm from '@/components/externe/signUpForm'
 
 export default function AuthPage() {
   const [email, setEmail] = useState('')
@@ -61,78 +63,8 @@ export default function AuthPage() {
                     <TabsTrigger value="login">Connexion</TabsTrigger>
                     <TabsTrigger value="signup">Inscription</TabsTrigger>
                   </TabsList>
-                  <TabsContent value="login">
-                    <form onSubmit={handleLogin}>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="login-email" className="text-sm font-medium text-gray-700">Email</Label>
-                          <Input 
-                            id="login-email" 
-                            placeholder="votre@email.com" 
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required 
-                            className="w-full"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="login-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
-                          <Input 
-                            id="login-password" 
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required 
-                            className="w-full"
-                          />
-                        </div>
-                      </div>
-                      <Button className="w-full mt-6" type="submit">Se connecter</Button>
-                    </form>
-                  </TabsContent>
-                  <TabsContent value="signup">
-                    <form onSubmit={handleSignup}>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="signup-name" className="text-sm font-medium text-gray-700">Nom</Label>
-                          <Input 
-                            id="signup-name" 
-                            placeholder="Votre nom" 
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required 
-                            className="w-full"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="signup-email" className="text-sm font-medium text-gray-700">Email</Label>
-                          <Input 
-                            id="signup-email" 
-                            placeholder="votre@email.com" 
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required 
-                            className="w-full"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="signup-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
-                          <Input 
-                            id="signup-password" 
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required 
-                            className="w-full"
-                          />
-                        </div>
-                      </div>
-                      <Button className="w-full mt-6" type="submit">S'inscrire</Button>
-                    </form>
-                  </TabsContent>
+                  <SignInForm />
+                  <SignUpForm />
                 </Tabs>
               </CardContent>
               {/* <CardFooter className="p-6 bg-gray-50 border-t">
