@@ -28,3 +28,6 @@ export function sign(data: string, privateKey: string): string {
     const signature = keyPair.sign(data);
     return signature.toDER("hex");
 }
+
+// verify signature
+// create license token

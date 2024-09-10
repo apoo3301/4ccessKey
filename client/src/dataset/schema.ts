@@ -2,6 +2,7 @@ import { boolean, timestamp, pgTable, text, primaryKey, integer, pgEnum, type An
 import { sql, SQL } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
 import { unique } from "drizzle-orm/mysql-core";
+import { time } from "console";
 
 
 export function lower(email: AnyPgColumn): SQL {
@@ -25,8 +26,14 @@ export const adminUserEmail = pgTable("adminUserEmail", {
     email: text("email").notNull(),
 }, (table) => ({ adminUserEmailIndex: uniqueIndex("adminUserEmailIndex").on(lower(table.email),), }));
 
-export const accounts = pgTable("account", {
+export const sessions = pgTable("session", {
+    sessionToken: text("sessionToken").primaryKey(),
     userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
-    // type: text("type").$type<AdapterAccountType>().notNull(),
-    
-})
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const verificationTokens = pgTable("verificationToken", {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull()
+}, (verificationTokens) => ({ compositePk: primaryKey({ columns: [verificationTokens.identifier, verificationTokens.token] }), }), );
