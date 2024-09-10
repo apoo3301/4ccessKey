@@ -37,3 +37,12 @@ export const verificationTokens = pgTable("verificationToken", {
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull()
 }, (verificationTokens) => ({ compositePk: primaryKey({ columns: [verificationTokens.identifier, verificationTokens.token] }), }), );
+
+export const authenticators = pgTable("authenticator", {
+    credentialId: text("credentialId").notNull().unique(),
+    userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    counter: integer("counter").notNull(),
+    credentialDeviceType: text("credentialDeviceType").notNull(),
+    credentialTransport: text("credentialTransport"),
+    credentialBackedUp: boolean("credentialBackedUp").notNull().default(false),
+}, (authenticators) => ({ compositePk: primaryKey({ columns: [authenticators.credentialId, authenticators.userId] }), }), );
