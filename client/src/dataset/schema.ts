@@ -24,3 +24,9 @@ export const adminUserEmail = pgTable("adminUserEmail", {
     id: text("id").primaryKey().$defaultFn(uuidv7),
     email: text("email").notNull(),
 }, (table) => ({ adminUserEmailIndex: uniqueIndex("adminUserEmailIndex").on(lower(table.email),), }));
+
+export const accounts = pgTable("account", {
+    userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    // type: text("type").$type<AdapterAccountType>().notNull(),
+    
+})
