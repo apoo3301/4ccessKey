@@ -16,6 +16,8 @@ export const users = pgTable("user", {
         password: text("password"),
         role: roleEnum("role").notNull().default("user"),
         createdAt: timestamp("createdAt").notNull().defaultNow(),
+        publicKey: text("publicKey"),
+
     }, (table) => ({
     emailUniqueIndex: uniqueIndex("emailUniqueIndex").on(lower(table.email)),
     }
