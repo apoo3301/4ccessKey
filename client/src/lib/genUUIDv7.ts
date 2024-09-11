@@ -16,7 +16,7 @@ function generateUUIDv7(): string {
       randomHigh.toString(16).padStart(8, '0') + '-' +
       randomLow.toString(16).padStart(8, '0')
     );
-  }
+}
   
-  console.log(generateUUIDv7());
+// console.log(generateUUIDv7());
   
