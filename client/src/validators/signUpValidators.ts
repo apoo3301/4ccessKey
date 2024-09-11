@@ -19,3 +19,5 @@ export const SignUpSchema = v.object({
         v.maxLength(8, "Your password must be at most 8 characters long.")
     )
 });
+
+export type SignUpInput = v.InferInput<typeof SignUpSchema>;
