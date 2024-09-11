@@ -26,3 +26,9 @@ export const adminUserEmailAddresses = pgTable("adminUserEmailAddress", {
 }, (table) => ({
     adminEmailUniqueIndex: uniqueIndex("adminEmailUniqueIndex").on(lower(table.email)),
 }))
+
+export const sessions = pgTable("session", {
+    sessionToken: text("sessionToken").primaryKey(),
+    userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+});
