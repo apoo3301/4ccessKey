@@ -21,3 +21,13 @@ export async function findAllUsers() {
 
     return allUsers;
 }
+
+export const findUserByEmail = async (email: string): Promise<typeof users.$inferSelect | null> => {
+    const user = await db
+    .select()
+    .from(users)
+    .where(eq(lower(users.email), email.toLowerCase()))
+    .then((res) => res[0] ?? null);
+
+    return user;
+}
