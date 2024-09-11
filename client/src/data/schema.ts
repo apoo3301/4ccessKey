@@ -8,7 +8,7 @@ export function lower(email: AnyPgColumn): SQL {
 
 export const roleEnum = pgEnum("role", ["admin", "user"]);
 
-export const users = pgTable("users", {
+export const users = pgTable("user", {
     id: text("id").primaryKey().$defaultFn(() => generateUUIDv7()),
     name: text("name"),
     email: text("email").notNull(),
@@ -19,3 +19,10 @@ export const users = pgTable("users", {
 }, (table) => ({
     emailUniqueIndex: uniqueIndex("emailUniqueIndex").on(lower(table.email)),
 }));
+
+export const adminUserEmailAddresses = pgTable("adminUserEmailAddress", {
+    id: text("id").primaryKey().$defaultFn(() => generateUUIDv7()),
+    email: text("email").notNull(),
+}, (table) => ({
+    adminEmailUniqueIndex: uniqueIndex("adminEmailUniqueIndex").on(lower(table.email)),
+}))
