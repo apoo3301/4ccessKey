@@ -17,3 +17,5 @@ function generateUUIDv7(): string {
       randomLow.toString(16).padStart(8, '0')
     );
 }
+
+export default generateUUIDv7;

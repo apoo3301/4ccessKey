@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SignupForm } from '@/components/extern/signUpform'
 
 export default function AuthPage() {
     const [email, setEmail] = useState('')
@@ -76,48 +77,7 @@ export default function AuthPage() {
                                             <Button className="w-full mt-6" type="submit">Se connecter</Button>
                                         </form>
                                     </TabsContent>
-                                    <TabsContent value="signup">
-                                        <form onSubmit={handleSignup}>
-                                            <div className="space-y-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="signup-name" className="text-sm font-medium text-gray-700">Nom</Label>
-                                                    <Input 
-                                                        id="signup-name" 
-                                                        placeholder="Votre nom" 
-                                                        type="text"
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                        required 
-                                                        className="w-full"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="signup-email" className="text-sm font-medium text-gray-700">Email</Label>
-                                                    <Input 
-                                                        id="signup-email" 
-                                                        placeholder="votre@email.com" 
-                                                        type="email"
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        required 
-                                                        className="w-full"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="signup-password" className="text-sm font-medium text-gray-700">Mot de passe</Label>
-                                                    <Input 
-                                                        id="signup-password" 
-                                                        type="password"
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        required 
-                                                        className="w-full"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <Button className="w-full mt-6" type="submit">S&apos;inscrire</Button>
-                                        </form>
-                                    </TabsContent>
+                                    <SignupForm />
                                 </Tabs>
                             </CardContent>
                         </Card>

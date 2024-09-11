@@ -1,6 +1,7 @@
 import { boolean, timestamp, pgTable, text, primaryKey, integer, pgEnum, type AnyPgColumn, uniqueIndex, json, uuid} from "drizzle-orm/pg-core";
 import { sql, SQL } from "drizzle-orm";
 import { time } from "console";
+import generateUUIDv7 from "@/lib/genUUIDv7";
 
 export function lower(email: AnyPgColumn): SQL {
     return sql`lower(${email})`;
