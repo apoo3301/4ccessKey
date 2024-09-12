@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const DATABASE_TOKEN = process.env.DATA_BASE_TOKEN;
+const DATABASE_TOKEN = process.env.DATABASE_TOKEN;
 
 const connect = async () => {
     const connectionState = mongoose.connection.readyState;
