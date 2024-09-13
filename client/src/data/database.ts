@@ -1,30 +1,14 @@
-import mongoose from 'mongoose';
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import * as schema from "./schema"
 
 const DATABASE_TOKEN = process.env.DATABASE_TOKEN;
 
-const connect = async () => {
-    const connectionState = mongoose.connection.readyState;
-    
-    if (connectionState === 1) {
-        console.log('Database is already connected');
-        return;
-    }
-
-    if (connectionState === 2) {
-        console.log('Connecting to database...');
-        return;
-    }
-
-    try {
-        await mongoose.connect(DATABASE_TOKEN!, {
-            dbName: '0x',
-            bufferCommands: true,
-        });
-        console.log('Database connected');
-    } catch (error : any) {
-        console.log('Database connection error', error);
-        throw new Error('Database connection error');
-    }
+if (!DATABASE_TOKEN) {
+    throw new Error("DATABASE_TOKEN not found in environment variables");
 }
 
-export default connect;
+const sql = neon(DATABASE_TOKEN);
+const db = drizzle(sql, { schema });
+
+export default db;  
