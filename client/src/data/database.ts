@@ -10,10 +10,10 @@ if (!DATABASE_TOKEN) {
 
 const sql = neon(DATABASE_TOKEN);
 
-console.log("Attempting to connect to the database...");
+console.log("[DATABASE] Attempting to connect to the instance...");
 
 const db = drizzle(sql, { schema });
 
-console.log("Connected to the database");
+console.log("[DATABASE] Connected successfully!");
 
 export default db;

@@ -12,3 +12,14 @@ export const getUserById = async (userId: string) => {
     throw new Error("Unable to fetch user by ID");
   }
 };
+
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await db.select().from(users).where(eq(users.email, email));
+
+    return user.length ? user[0] : null;
+  } catch (error: any) {
+    console.error("Error fetching user by email:", error);
+    throw new Error("Unable to fetch user by email");
+  }
+}
