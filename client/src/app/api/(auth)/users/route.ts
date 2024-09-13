@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm/expressions";
 import { getUserById } from "@/queries/findUser";
 
+
 export const GET = async () => {
   try {
     const allUsers = await db.select().from(users);
@@ -78,5 +79,42 @@ export const PATCH = async (request: Request) => {
     );
   } catch (error: any) {
     return new NextResponse(JSON.stringify(error), { status: 500 });
+  }
+};
+
+export const DELETE = async (request: Request) => {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return new NextResponse(
+        JSON.stringify({ message: "User ID not found" }),
+        { status: 400 }
+      );
+    }
+
+    const deletedUser = await db
+      .delete(users)
+      .where(eq(users.id, userId))
+      .returning();
+
+    if (deletedUser.length === 0) {
+      return new NextResponse(
+        JSON.stringify({ message: "User not found" }),
+        { status: 404 }
+      );
+    }
+
+    return new NextResponse(
+      JSON.stringify({ message: "User deleted successfully" }),
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Error deleting user:", error);
+    return new NextResponse(
+      JSON.stringify({ message: "Internal Server Error", error: error.message }),
+      { status: 500 }
+    );
   }
 };
