@@ -26,7 +26,6 @@ export const POST = async (request: Request) => {
     const { username, email, password } = body;
 
     if (!username || !email || !password) {
-      console.error("Missing required fields:", { username, email, password });
       return new NextResponse(
         JSON.stringify({ message: "Missing required fields" }),
         { status: 400 }
@@ -44,12 +43,8 @@ export const POST = async (request: Request) => {
       { status: 201 }
     );
   } catch (error: any) {
-    console.error("Error creating user:", error);
     return new NextResponse(
-      JSON.stringify({
-        message: "Internal Server Error",
-        error: error.message,
-      }),
+      JSON.stringify({ message: "Internal Server Error", error: error.message }),
       { status: 500 }
     );
   }
