@@ -1,23 +1,28 @@
-import db from "@/data/database";
-import { users } from "@/data/schema";
-import { NextResponse } from "next/server";
+import { hashPassword } from "@/security/hash";
 import { eq } from "drizzle-orm/expressions";
-import { getUserById } from "@/queries/findUser";
-
+import { NextResponse } from "next/server";
+import { users } from "@/data/schema";
+import db from "@/data/database";
 
 export const GET = async () => {
   try {
     const allUsers = await db.select().from(users);
     return new NextResponse(JSON.stringify(allUsers), { status: 200 });
   } catch (error: any) {
-    return new NextResponse(JSON.stringify(error), { status: 500 });
+    console.error("Error fetching users:", error);
+    return new NextResponse(
+      JSON.stringify({
+        message: "Internal Server Error",
+        error: error.message,
+      }),
+      { status: 500 }
+    );
   }
 };
 
 export const POST = async (request: Request) => {
   try {
     const body = await request.json();
-
     const { username, email, password } = body;
 
     if (!username || !email || !password) {
@@ -28,16 +33,18 @@ export const POST = async (request: Request) => {
       );
     }
 
+    const hashedPassword = hashPassword(password);
     const newUser = await db
       .insert(users)
-      .values({ username, email, password })
+      .values({ username, email, password: hashedPassword })
       .returning();
 
     return new NextResponse(
-      JSON.stringify({ message: "user created", user: newUser[0] }),
+      JSON.stringify({ message: "User created", user: newUser[0] }),
       { status: 201 }
     );
   } catch (error: any) {
+    console.error("Error creating user:", error);
     return new NextResponse(
       JSON.stringify({
         message: "Internal Server Error",
@@ -60,7 +67,11 @@ export const PATCH = async (request: Request) => {
       );
     }
 
-    const existingUser = await getUserById(userId);
+    const [existingUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
     if (!existingUser) {
       return new NextResponse(JSON.stringify({ message: "User not found" }), {
         status: 404,
@@ -78,7 +89,14 @@ export const PATCH = async (request: Request) => {
       { status: 200 }
     );
   } catch (error: any) {
-    return new NextResponse(JSON.stringify(error), { status: 500 });
+    console.error("Error updating user:", error);
+    return new NextResponse(
+      JSON.stringify({
+        message: "Internal Server Error",
+        error: error.message,
+      }),
+      { status: 500 }
+    );
   }
 };
 
@@ -100,10 +118,9 @@ export const DELETE = async (request: Request) => {
       .returning();
 
     if (deletedUser.length === 0) {
-      return new NextResponse(
-        JSON.stringify({ message: "User not found" }),
-        { status: 404 }
-      );
+      return new NextResponse(JSON.stringify({ message: "User not found" }), {
+        status: 404,
+      });
     }
 
     return new NextResponse(
@@ -113,7 +130,10 @@ export const DELETE = async (request: Request) => {
   } catch (error: any) {
     console.error("Error deleting user:", error);
     return new NextResponse(
-      JSON.stringify({ message: "Internal Server Error", error: error.message }),
+      JSON.stringify({
+        message: "Internal Server Error",
+        error: error.message,
+      }),
       { status: 500 }
     );
   }
