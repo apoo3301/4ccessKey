@@ -1,4 +1,5 @@
 import { boolean, timestamp, pgTable, text, primaryKey, integer, pgEnum, type AnyPgColumn, uniqueIndex, json, uuid} from "drizzle-orm/pg-core";
+import generateUUIDv7 from "@/security/uuid";
 import { sql, SQL } from "drizzle-orm";
 import { time } from "console";
 

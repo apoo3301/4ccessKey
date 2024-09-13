@@ -1,53 +1,82 @@
+import db from "@/data/database";
+import { users } from "@/data/schema";
 import { NextResponse } from "next/server";
-import User from "@/data/schemas/user";
-import connect from "@/data/database";
-import { Types } from "mongoose";
-
-const ObjectId = require('mongoose').Types.ObjectId;
+import { eq } from "drizzle-orm/expressions";
+import { getUserById } from "@/queries/findUser";
 
 export const GET = async () => {
-    try {
-        await connect();
-        const users = await User.find();
-        return new NextResponse(JSON.stringify(users), { status: 200 });
-    } catch (error : any) {
-        return new NextResponse(JSON.stringify(error), { status: 500 });
+  try {
+    const allUsers = await db.select().from(users);
+    return new NextResponse(JSON.stringify(allUsers), { status: 200 });
+  } catch (error: any) {
+    return new NextResponse(JSON.stringify(error), { status: 500 });
+  }
+};
+
+export const POST = async (request: Request) => {
+  try {
+    const body = await request.json();
+
+    const { username, email, password } = body;
+
+    if (!username || !email || !password) {
+      console.error("Missing required fields:", { username, email, password });
+      return new NextResponse(
+        JSON.stringify({ message: "Missing required fields" }),
+        { status: 400 }
+      );
     }
-}
 
-export const POST = async (request : Request) => {
-    try {
-        const body = await request.json();
-        await connect();
-        const userUser = new User(body);
-        await userUser.save();
+    const newUser = await db
+      .insert(users)
+      .values({ username, email, password })
+      .returning();
 
-        return new NextResponse(JSON.stringify({ message: 'User created', user:userUser }), { status: 200 });
-    } catch (error: any) {
-        return new NextResponse(JSON.stringify(error), { status: 500 });
+    return new NextResponse(
+      JSON.stringify({ message: "user created", user: newUser[0] }),
+      { status: 201 }
+    );
+  } catch (error: any) {
+    return new NextResponse(
+      JSON.stringify({
+        message: "Internal Server Error",
+        error: error.message,
+      }),
+      { status: 500 }
+    );
+  }
+};
+
+export const PATCH = async (request: Request) => {
+  try {
+    const body = await request.json();
+    const { userId, newUsername } = body;
+
+    if (!userId || !newUsername) {
+      return new NextResponse(
+        JSON.stringify({ message: "ID or new username not found" }),
+        { status: 400 }
+      );
     }
-}
 
-export const PATCH = async (request : Request) => {
-    try {
-        const body = await request.json();
-        const { userId, newUsername } = body;
-        await connect();
-        
-        if (!userId || !newUsername) {
-            return new NextResponse(JSON.stringify({ message: 'ID or new username not found' }), { status: 400 });
-        }
-
-        if (!Types.ObjectId.isValid(userId)) {
-            return new NextResponse(JSON.stringify({ message: 'Invalid ID' }), { status: 400 });
-        }
-
-        const updatedUser = await User.findOneAndUpdate({ _id: new ObjectId(userId) }, { username: newUsername }, { new: true });
-        if (!updatedUser) {
-            return new NextResponse(JSON.stringify({ message: 'User not found' }), { status: 400 });
-        }
-        return new NextResponse(JSON.stringify({ message: 'User updated', user: updatedUser }), { status: 200 });
-    } catch (error: any) {
-        return new NextResponse(JSON.stringify(error), { status: 500 });
+    const existingUser = await getUserById(userId);
+    if (!existingUser) {
+      return new NextResponse(JSON.stringify({ message: "User not found" }), {
+        status: 404,
+      });
     }
-}
+
+    const updatedUser = await db
+      .update(users)
+      .set({ username: newUsername })
+      .where(eq(users.id, userId))
+      .returning();
+
+    return new NextResponse(
+      JSON.stringify({ message: "User updated", user: updatedUser[0] }),
+      { status: 200 }
+    );
+  } catch (error: any) {
+    return new NextResponse(JSON.stringify(error), { status: 500 });
+  }
+};
