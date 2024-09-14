@@ -1,19 +1,10 @@
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import * as schema from "./schema";
+import { PrismaClient } from '@prisma/client'
 
-const DATABASE_TOKEN = process.env.DATABASE_TOKEN;
-
-if (!DATABASE_TOKEN) {
-  throw new Error("DATABASE_TOKEN not found in environment variables");
+declare global {
+    var prisma : PrismaClient | undefined
 }
 
-const sql = neon(DATABASE_TOKEN);
+export const db = globalThis.prisma || new PrismaClient()
 
-console.log("[DATABASE] Attempting to connect to the instance...");
+if (process.env.NODE_ENV === "production") globalThis.prisma = db
 
-const db = drizzle(sql, { schema });
-
-console.log("[DATABASE] Connected successfully!");
-
-export default db;
