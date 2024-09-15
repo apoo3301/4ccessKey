@@ -1,5 +1,5 @@
 import React from 'react'
-import { auth } from "../../../../auth"
+import { auth } from "../../../auth"
 
 const SettingsPage = async () => {
     const session = await auth();
